@@ -21,6 +21,7 @@ import createReduxStore from '../../common/createReduxStore';
 import Html from './html';
 import Routes from '../../client/app/Routes';
 import modules from '../modules';
+import clientModules from '../../client/modules';
 import { options as spinConfig } from '../../../.spinrc.json';
 import settings from '../../../settings';
 
@@ -55,7 +56,6 @@ const renderServerSide = async (req, res) => {
   const store = createReduxStore(initialState, client);
 
   const context = {};
-  const clientModules = require('../../client/modules').default;
   const App = () =>
     clientModules.getWrappedRoot(
       <Provider store={store}>
