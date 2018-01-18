@@ -22,12 +22,12 @@ const resolvers = {
     }
   },
   Mutation: {
-    addCounterState: (_, { amount }, { cache }) => {
+    addCounterState: async (_, { amount }, { cache }) => {
       const { counterState: { counter } } = cache.readQuery({ query: COUNTER_QUERY_CLIENT });
 
       const newAmount = amount + counter;
 
-      cache.writeData({
+      await cache.writeData({
         data: {
           counterState: {
             counter: newAmount,

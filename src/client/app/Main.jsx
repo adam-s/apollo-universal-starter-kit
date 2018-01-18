@@ -113,7 +113,6 @@ const client = createApolloClient({
   cache
 });
 
-console.log('linkState: ', client);
 if (window.__APOLLO_STATE__) {
   cache.restore(window.__APOLLO_STATE__);
 }
