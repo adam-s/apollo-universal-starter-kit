@@ -3,6 +3,7 @@ import ReactDOMServer from 'react-dom/server';
 import { createApolloFetch } from 'apollo-fetch';
 import { ApolloLink } from 'apollo-link';
 import { BatchHttpLink } from 'apollo-link-batch-http';
+import { withClientState } from 'apollo-link-state';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloProvider, getDataFromTree } from 'react-apollo';
 import { Provider } from 'react-redux';
@@ -47,8 +48,10 @@ const renderServerSide = async (req, res) => {
 
   let link = new BatchHttpLink({ fetch });
 
+  const linkState = withClientState({ ...clientModules.resolvers, cache });
+
   const client = createApolloClient({
-    link: ApolloLink.from((settings.app.logging.apolloLogging ? [new LoggingLink()] : []).concat([link])),
+    link: ApolloLink.from((settings.app.logging.apolloLogging ? [new LoggingLink()] : []).concat([linkState, link])),
     cache
   });
 
