@@ -71,7 +71,7 @@ export default class {
   }
 
   get resolvers() {
-    return merge(this.resolver)[0];
+    return merge(...this.resolver);
   }
 
   get middlewares() {

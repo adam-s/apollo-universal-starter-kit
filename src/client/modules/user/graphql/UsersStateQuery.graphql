@@ -1,0 +1,7 @@
+#import "./UsersState.graphql"
+
+query UsersState {
+    usersState @client {
+        ...UsersStateInfo
+    }
+}
