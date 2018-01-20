@@ -1,4 +1,4 @@
-#import "./UsersState.graphql"
+#import "./UsersState.client.graphql"
 
 mutation updateFilter($filter: OrderByUserInput!) {
     updateFilter(filter: $filter) @client
