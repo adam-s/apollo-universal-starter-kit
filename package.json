@@ -80,6 +80,7 @@
     "expo": "^24.0.2",
     "express": "^4.16.2",
     "filesize": "^3.5.11",
+    "formik": "^0.10.5",
     "graphql": "^0.11.7",
     "graphql-auth": "^0.2.0",
     "graphql-iso-date": "^3.3.0",
@@ -137,7 +138,8 @@
     "stripe-local": "^0.1.1",
     "styled-components": "^2.4.0",
     "subscriptions-transport-ws": "^0.9.4",
-    "universal-cookie-express": "^2.1.2"
+    "universal-cookie-express": "^2.1.2",
+    "yup": "^0.24.0"
   },
   "devDependencies": {
     "apollo-utilities": "^1.0.4",
