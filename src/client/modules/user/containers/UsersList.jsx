@@ -7,8 +7,8 @@ import { removeTypename } from '../../../../common/utils';
 import UsersListView from '../components/UsersListView';
 
 // Graphql
-import USERS_STATE_QUERY from '../graphql/UsersStateQuery.graphql';
-import UPDATE_ORDER_BY from '../graphql/UpdateOrderBy.graphql';
+import USERS_STATE_QUERY from '../graphql/UsersStateQuery.client.graphql';
+import UPDATE_ORDER_BY from '../graphql/UpdateOrderBy.client.graphql';
 import USERS_QUERY from '../graphql/UsersQuery.graphql';
 import DELETE_USER from '../graphql/DeleteUser.graphql';
 

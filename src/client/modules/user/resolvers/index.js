@@ -1,6 +1,6 @@
 import update from 'immutability-helper';
 
-import USERS_STATE_QUERY from '../graphql/UsersStateQuery.graphql';
+import USERS_STATE_QUERY from '../graphql/UsersStateQuery.client.graphql';
 
 const TYPE_USERS_STATE = 'UsersState';
 const TYPE_USERS_STATE_FILTER = 'FilterUserInput';

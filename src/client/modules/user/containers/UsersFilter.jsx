@@ -7,8 +7,8 @@ import { removeTypename } from '../../../../common/utils';
 import UsersFilterView from '../components/UsersFilterView';
 
 //Graphql
-import USERS_STATE_QUERY from '../graphql/UsersStateQuery.graphql';
-import UPDATE_FILTER from '../graphql/UpdateFilter.graphql';
+import USERS_STATE_QUERY from '../graphql/UsersStateQuery.client.graphql';
+import UPDATE_FILTER from '../graphql/UpdateFilter.client.graphql';
 
 class UsersFilter extends React.Component {
   render() {
