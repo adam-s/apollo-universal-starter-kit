@@ -1,17 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Field, reduxForm } from 'redux-form';
-import { Form, RenderField, Button, Alert } from '../../common/components/web';
-import { required, email } from '../../../../common/validation';
 
-const ForgotPasswordForm = ({ handleSubmit, submitting, onSubmit, error, sent }) => {
+import { withFormik } from 'formik';
+import Yup from 'yup';
+
+import { Form, Button, Alert, RenderField } from '../../common/components/web';
+import Field from './FieldAdapter';
+
+const ForgotPasswordForm = ({ values, handleSubmit, status, isSubmitting, errors }) => {
   return (
-    <Form name="forgotPassword" onSubmit={handleSubmit(onSubmit)}>
-      {sent && <Alert color="success">Reset password instructions have been emailed to you.</Alert>}
-      <Field name="email" component={RenderField} type="email" label="Email" validate={[required, email]} />
+    <Form name="forgotPassword" onSubmit={handleSubmit}>
+      {status && status.sent && <Alert color="success">Reset password instructions have been emailed to you.</Alert>}
+      <Field name="email" component={RenderField} type="email" label="Email" value={values.email} />
       <div className="text-center">
-        {error && <Alert color="error">{error}</Alert>}
-        <Button color="primary" type="submit" disabled={submitting}>
+        {errors.form && <Alert color="error">{errors.form}</Alert>}
+        <Button color="primary" type="submit" disabled={isSubmitting}>
           Send Reset Instructions
         </Button>
       </div>
@@ -21,12 +24,51 @@ const ForgotPasswordForm = ({ handleSubmit, submitting, onSubmit, error, sent })
 
 ForgotPasswordForm.propTypes = {
   handleSubmit: PropTypes.func,
-  onSubmit: PropTypes.func,
-  submitting: PropTypes.bool,
-  error: PropTypes.string,
-  sent: PropTypes.bool
+  sent: PropTypes.bool,
+  isSubmitting: PropTypes.bool,
+  errors: PropTypes.object,
+  values: PropTypes.object,
+  status: PropTypes.object
 };
 
-export default reduxForm({
-  form: 'forgotPassword'
+const transformApiErrors = apiErrors => {
+  const errors = {};
+  errors['form'] = 'Reset password failed!';
+  apiErrors.map(error => {
+    if (error.field && error.message) {
+      errors[error.field] = error.message;
+    }
+  });
+  return errors;
+};
+
+const ForgotPasswordFormWithFormik = withFormik({
+  mapPropsToValues() {
+    return {
+      email: ''
+    };
+  },
+  async handleSubmit(values, { setStatus, resetForm, setErrors, setSubmitting, props: { onSubmit } }) {
+    const result = await onSubmit(values);
+
+    if (result === true) {
+      resetForm();
+      setStatus({ sent: true });
+    } else if (result && result.errors) {
+      setErrors(transformApiErrors(result.errors));
+    }
+
+    setSubmitting(false);
+  },
+  validationSchema: Yup.object().shape({
+    email: Yup.string()
+      .email('Invalid email address')
+      .required('Email is required!')
+  })
 })(ForgotPasswordForm);
+
+ForgotPasswordFormWithFormik.propTypes = {
+  onSubmit: PropTypes.func.isRequired
+};
+
+export default ForgotPasswordFormWithFormik;
