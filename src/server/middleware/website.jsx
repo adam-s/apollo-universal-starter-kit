@@ -23,7 +23,6 @@ import Html from './html';
 import Routes from '../../client/app/Routes';
 import modules from '../modules';
 import clientModules from '../../client/modules';
-import { options as spinConfig } from '../../../.spinrc.json';
 import settings from '../../../settings';
 
 let assetMap;
@@ -95,7 +94,7 @@ const renderServerSide = async (req, res) => {
     res.end();
   } else {
     if (__DEV__ || !assetMap) {
-      assetMap = JSON.parse(fs.readFileSync(path.join(spinConfig.frontendBuildDir, 'web', 'assets.json')));
+      assetMap = JSON.parse(fs.readFileSync(path.join(__FRONTEND_BUILD_DIR__, 'assets.json')));
     }
 
     const apolloState = Object.assign({}, cache.extract());

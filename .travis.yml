@@ -1,12 +1,16 @@
 language: node_js
 node_js:
   - "node"
+cache:
+  directories:
+    - $HOME/.cache/yarn
+    - .cache
 dist: trusty
 os:
   - linux
 script:
-  - yarn seed
   - yarn test
+before_deploy: rm -rf node_modules
 deploy:
   provider: heroku
   api_key:
