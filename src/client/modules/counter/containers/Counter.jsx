@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { graphql, compose } from 'react-apollo';
 import update from 'immutability-helper';
 
+import { onReduxIncrement } from '../actions';
 import CounterView from '../components/CounterView';
 
 import COUNTER_QUERY from '../graphql/CounterQuery.graphql';
@@ -96,15 +97,13 @@ const CounterWithApollo = compose(
   })
 )(Counter);
 
-export default connect(
-  state => ({ reduxCount: state.counter.reduxCount }),
-  dispatch => ({
-    onReduxIncrement(value) {
-      return () =>
-        dispatch({
-          type: 'COUNTER_INCREMENT',
-          value: Number(value)
-        });
-    }
-  })
-)(CounterWithApollo);
+const mapStateToProps = state => {
+  const { counter: { reduxCount } } = state;
+  return {
+    reduxCount
+  };
+};
+
+export default connect(mapStateToProps, {
+  onReduxIncrement
+})(CounterWithApollo);
