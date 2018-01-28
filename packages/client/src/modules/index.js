@@ -9,4 +9,5 @@ import './favicon';
 
 import Feature from './connector';
 
+console.log('one');
 export default new Feature(counter, post, upload, user, subscription, contact, pageNotFound);

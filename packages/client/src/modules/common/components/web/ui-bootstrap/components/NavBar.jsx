@@ -2,8 +2,10 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { Container, Navbar, Nav, NavItem } from 'reactstrap';
 
-import modules from '../../../../../../modules';
+import modules from '../../../../../../modules/configIndex.js';
 import settings from '../../../../../../../../../settings';
+
+// import { navItems, navItemsRight } from '../../../../config.js';
 
 const NavBar = () => (
   <Navbar color="faded" light>
@@ -12,11 +14,11 @@ const NavBar = () => (
         <NavLink to="/" className="navbar-brand">
           {settings.app.name}
         </NavLink>
-        {modules.navItems}
+        {modules.getConfig('navItems')}
       </Nav>
 
       <Nav className="ustify-content-end">
-        {modules.navItemsRight}
+        {modules.getConfig('navItemsRight')}
         {(!__PERSIST_GQL__ || __DEV__) && (
           <NavItem>
             <a href="/graphiql" className="nav-link">

@@ -18,22 +18,22 @@ import { SubscriptionClient } from 'subscriptions-transport-ws';
 import ReactGA from 'react-ga';
 import url from 'url';
 
+import * as config from './config';
 import RedBox from './RedBox';
 import createApolloClient from '../../../common/createApolloClient';
 import createReduxStore, { storeReducer } from '../../../common/createReduxStore';
 import settings from '../../../../settings';
 import Routes from './Routes';
-import modules from '../modules';
 
 const { hostname, pathname, port } = url.parse(__BACKEND_URL__);
 
 const fetch = createApolloFetch({
   uri: hostname === 'localhost' ? '/graphql' : __BACKEND_URL__,
-  constructOptions: modules.constructFetchOptions
+  constructOptions: config.constructFetchOptions
 });
 const cache = new InMemoryCache();
 
-for (const middleware of modules.middlewares) {
+for (const middleware of config.middlewares) {
   fetch.batchUse(({ requests, options }, next) => {
     options.credentials = 'same-origin';
     options.headers = options.headers || {};
@@ -52,14 +52,14 @@ for (const middleware of modules.middlewares) {
   });
 }
 
-for (const afterware of modules.afterwares) {
+for (const afterware of config.afterwares) {
   fetch.batchUseAfter(({ response, options }, next) => {
     afterware(response, options, next);
   });
 }
 
 let connectionParams = {};
-for (const connectionParam of modules.connectionParams) {
+for (const connectionParam of config.connectionParams) {
   Object.assign(connectionParams, connectionParam());
 }
 
@@ -77,7 +77,7 @@ wsClient.use([
   {
     applyMiddleware(operationOptions, next) {
       let params = {};
-      for (const param of modules.connectionParams) {
+      for (const param of config.connectionParams) {
         Object.assign(params, param());
       }
 
@@ -104,7 +104,7 @@ let link = ApolloLink.split(
   new BatchHttpLink({ fetch })
 );
 
-const linkState = withClientState({ ...modules.resolvers, cache });
+const linkState = withClientState({ ...config.resolvers, cache });
 
 // if (__PERSIST_GQL__) {
 //   networkInterface = addPersistedQueries(networkInterface, queryMap);
@@ -179,7 +179,7 @@ export default class Main extends React.Component {
     return this.state.error ? (
       <RedBox error={this.state.error} />
     ) : (
-      modules.getWrappedRoot(
+      config.getWrappedRoot(
         <Provider store={store}>
           <ApolloProvider client={client}>
             <ConnectedRouter history={history}>{Routes}</ConnectedRouter>
